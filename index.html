@@ -17,6 +17,7 @@
             background: #fefefe;
             color: #1a1a2e;
             line-height: 1.5;
+            /* плавная прокрутка через CSS (работает в современных браузерах) */
             scroll-behavior: smooth;
         }
 
@@ -378,63 +379,28 @@
 
         .contact-grid {
             display: flex;
-            flex-wrap: wrap;
-            gap: 3rem;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             background: white;
             padding: 2.5rem;
             border-radius: 2rem;
             box-shadow: 0 12px 28px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .contact-info {
-            flex: 1;
-        }
-
-        .contact-form {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 1.5rem 0;
-        }
-
-        .contact-form .form-link-btn {
-            display: inline-block;
-            background: #2563eb;
-            color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
-            padding: 1rem 2.5rem;
-            border-radius: 40px;
-            text-decoration: none;
-            transition: all 0.2s;
-            box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-            margin-bottom: 1rem;
-        }
-
-        .contact-form .form-link-btn:hover {
-            background: #1e40af;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(37,99,235,0.4);
-        }
-
-        .contact-form .form-link-btn i {
-            margin-right: 10px;
-        }
-
-        .contact-form .form-hint {
-            color: #4b5563;
-            font-size: 0.95rem;
-            margin-top: 0.5rem;
+            width: 100%;
         }
 
         .contact-detail {
             display: flex;
+            justify-content: center;
+            align-items: center;
             gap: 1rem;
             margin: 1.5rem 0;
-            align-items: center;
         }
 
         .contact-detail i {
@@ -485,7 +451,7 @@
             .projects-grid { gap: 1.2rem; }
             .modal-body { padding: 1.5rem; }
             .modal-img { max-height: 45vh; }
-            .contact-form .form-link-btn { font-size: 1rem; padding: 0.8rem 1.8rem; }
+            .contact-grid { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -496,6 +462,7 @@
         <nav>
             <div class="logo">anna<span style="color:#2563eb">.dev</span></div>
             <ul class="nav-links">
+                <li><a href="#hero">Главная</a></li>
                 <li><a href="#projects">Портфолио</a></li>
                 <li><a href="#about">Обо мне</a></li>
                 <li><a href="#contact">Контакты</a></li>
@@ -505,9 +472,9 @@
 </header>
 
 <main>
-    <section class="hero">
+    <section id="hero" class="hero">
         <div class="container">
-            <img class="avatar-photo" src="https://anna.borser.site/images/avatar.png" alt="Анна Смирнова">
+            <img class="avatar-photo" src="https://github.com/Borser71/portfolio/raw/main/avatar.png" alt="Анна Смирнова">
             <h1>Привет, я <span class="highlight">Анна Смирнова</span></h1>
             <p>Разработчик сайтов и веб-интерфейсов. Создаю современные, быстрые и красивые проекты, которые решают задачи бизнеса.</p>
             <a href="#projects" class="btn btn-primary">Посмотреть работы</a>
@@ -526,7 +493,7 @@
         <div class="container">
             <div class="about-flex">
                 <div class="about-photo">
-                    <img src="https://anna.borser.site/images/obo.png" alt="Анна за работой">
+                    <img src="https://github.com/Borser71/portfolio/raw/main/obo.png" alt="Анна за работой">
                 </div>
                 <div>
                     <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;">Коротко обо мне</h2>
@@ -555,12 +522,6 @@
                     <div class="contact-detail"><i class="fab fa-telegram"></i> <span class="copyable" data-copy="@anna_smirnova_dev">@anna_smirnova_dev</span></div>
                     <div class="contact-detail"><i class="fas fa-phone"></i> <span class="copyable" data-copy="+7 999 123-45-67">+7 999 123-45-67</span></div>
                     <p style="margin-top: 20px; font-size: 0.85rem;"><i class="fas fa-mouse-pointer"></i> Нажмите на любой контакт, чтобы скопировать</p>
-                </div>
-                <div class="contact-form">
-                    <a href="https://forms.yandex.ru/u/6a32d6a195add518a9a51de5/" target="_blank" class="form-link-btn">
-                        <i class="fas fa-pen-to-square"></i> Заполнить форму
-                    </a>
-                    <p class="form-hint">Форма откроется в новой вкладке Яндекса.</p>
                 </div>
             </div>
         </div>
@@ -596,7 +557,7 @@
             fullDesc: "Полноценный интернет-магазин фермерских продуктов. Разработан на React с использованием Redux Toolkit для управления состоянием. Реализована корзина, оформление заказа, интеграция с платежной системой, личный кабинет покупателя и админ-панель для управления товарами и заказами.",
             tech: "Технологии: React, Redux Toolkit, Node.js, Express, MongoDB, JWT-авторизация, Stripe API.",
             tags: ["React", "Redux", "Node.js"],
-            img: "https://anna.borser.site/images/1.png",
+            img: "https://github.com/Borser71/portfolio/raw/main/ferma.png",
             link: "#",
             subtitle: "Интернет-магазин"
         },
@@ -607,7 +568,7 @@
             fullDesc: "Дашборд для бизнес-аналитики. Позволяет подключаться к различным источникам данных, строить графики и диаграммы в реальном времени. Поддержка экспорта отчетов в PDF и Excel, настраиваемые виджеты, права доступа для разных ролей.",
             tech: "Технологии: Vue 3, D3.js, Firebase, Vite, Pinia, Chart.js.",
             tags: ["Vue 3", "D3.js", "Firebase"],
-            img: "https://anna.borser.site/images/2.png",
+            img: "https://github.com/Borser71/portfolio/raw/main/dash.png",
             link: "#",
             subtitle: "Аналитическая панель"
         },
@@ -618,7 +579,7 @@
             fullDesc: "Иммерсивный сайт-портфолио для дизайн-студии. Реализована плавная анимация при скролле (GSAP ScrollTrigger), фильтрация работ по категориям, галерея с лайтбоксом, адаптивная верстка под все устройства. Время загрузки оптимизировано до 1.2 секунд.",
             tech: "Технологии: GSAP, Tailwind CSS, JavaScript, Webpack, Lazy Loading.",
             tags: ["GSAP", "Tailwind", "JS"],
-            img: "https://anna.borser.site/images/3.png",
+            img: "https://github.com/Borser71/portfolio/raw/main/diz.png",
             link: "#",
             subtitle: "Креативное портфолио"
         },
@@ -629,7 +590,7 @@
             fullDesc: "Мобильное приложение для трекинга здоровья и тренировок. Реализован шагомер, дневник калорий с поиском продуктов, графики прогресса по дням/неделям/месяцам. Push-уведомления, напоминания о тренировках. Данные синхронизируются с Apple Health / Google Fit. (Веб-админка для тренеров — в разработке).",
             tech: "Технологии: React Native, Expo, Redux Toolkit, Node.js, MongoDB, интеграция с HealthKit/Google Fit.",
             tags: ["React Native", "Expo", "Node.js"],
-            img: "https://anna.borser.site/images/4.png",
+            img: "https://github.com/Borser71/portfolio/raw/main/mobi.png",
             link: "#",
             subtitle: "Мобильное приложение + веб-панель"
         },
@@ -640,7 +601,7 @@
             fullDesc: "Корпоративный портал для HR-отдела. Включает календарь мероприятий, базу знаний, систему заявок на отпуск/больничный, интеграцию с Slack для уведомлений. Реализована ролевая модель доступа: сотрудник, HR, руководитель.",
             tech: "Технологии: Next.js, Prisma, PostgreSQL, NextAuth, Tailwind, SWR, Slack API.",
             tags: ["Next.js", "Prisma", "PostgreSQL"],
-            img: "https://anna.borser.site/images/5.png",
+            img: "https://github.com/Borser71/portfolio/raw/main/portal.png",
             link: "#",
             subtitle: "Внутренний HR-портал"
         },
@@ -651,7 +612,7 @@
             fullDesc: "Лендинг для бренда одежды. Реализован анимированный каталог товаров, таймер до конца акции, форма захвата с отправкой в CRM, отзывы клиентов. Конверсия в заявки — 12%. Интеграция с Telegram-ботом для автоматической отправки чеков.",
             tech: "Технологии: Webflow, CSS Grid, JavaScript, Telegram API, CRM-система.",
             tags: ["Webflow", "CSS grid", "JS"],
-            img: "https://anna.borser.site/images/6.png",
+            img: "https://github.com/Borser71/portfolio/raw/main/mag.png",
             link: "#",
             subtitle: "Продающий лендинг"
         }
@@ -699,10 +660,27 @@
         document.getElementById('projectModal').classList.remove('active');
         document.body.style.overflow = 'auto';
     }
-    
+
+    // ---- ПЛАВНАЯ ПРОКРУТКА (работает 100%) ----
     document.addEventListener('DOMContentLoaded', () => {
-        renderProjects();
-        
+        // Все ссылки, начинающиеся с #
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const targetId = this.getAttribute('href');
+                if (targetId === "#" || targetId === "") return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    e.preventDefault(); // отменяем стандартное поведение
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Остальной код (модалки, копирование)
         const modal = document.getElementById('projectModal');
         modal.querySelector('.modal-close').addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
@@ -720,6 +698,8 @@
                 setTimeout(() => tooltip.remove(), 1200);
             });
         });
+
+        renderProjects();
     });
 </script>
 </body>
