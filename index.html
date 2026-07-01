@@ -160,7 +160,6 @@
             align-items: stretch;
         }
 
-        /* ===== КАРТОЧКА ===== */
         .project-card {
             background: white;
             border-radius: 1.5rem;
@@ -169,7 +168,6 @@
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
-            /* высоту будем задавать через JS, поэтому убираем height: 100% */
         }
 
         .project-card:hover {
@@ -180,7 +178,7 @@
         .project-card .project-img {
             width: 100%;
             height: 220px;
-            object-fit: cover; /* меняем на cover, чтобы картинки заполняли блок без пустот */
+            object-fit: cover;
             background: #e2e8f0;
             display: block;
         }
@@ -366,31 +364,33 @@
             font-size: 0.9rem;
         }
 
-        /* ===== КОНТАКТЫ ===== */
+        /* ===== КОНТАКТЫ И ФОРМА ===== */
         .contact-grid {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            flex-wrap: wrap;
+            gap: 3rem;
             background: white;
             padding: 2.5rem;
             border-radius: 2rem;
             box-shadow: 0 12px 28px rgba(0,0,0,0.05);
-            text-align: center;
-            max-width: 500px;
-            margin: 0 auto;
+            align-items: flex-start;
         }
 
         .contact-info {
-            width: 100%;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .contact-form {
+            flex: 1;
+            min-width: 250px;
         }
 
         .contact-detail {
             display: flex;
-            justify-content: center;
-            align-items: center;
             gap: 1rem;
             margin: 1.5rem 0;
+            align-items: center;
         }
 
         .contact-detail i {
@@ -429,6 +429,81 @@
             white-space: nowrap;
         }
 
+        /* Стили для формы */
+        .contact-form label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #1e293b;
+        }
+
+        .required-star {
+            color: #ef4444;
+            font-size: 1.2rem;
+            margin-left: 2px;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            margin-bottom: 1.2rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 2rem;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+        }
+
+        .contact-form textarea {
+            border-radius: 1.5rem;
+            resize: vertical;
+        }
+
+        .contact-form button[type="submit"] {
+            background: #0f172a;
+            color: white;
+            border: none;
+            padding: 0.8rem 2.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .contact-form button[type="submit"]:hover {
+            background: #2563eb;
+        }
+
+        .form-success {
+            display: none;
+            background: #dcfce7;
+            color: #166534;
+            padding: 1rem 1.5rem;
+            border-radius: 2rem;
+            border: 1px solid #86efac;
+            font-weight: 500;
+            margin-top: 1.2rem;
+            text-align: center;
+        }
+
+        .form-success.show {
+            display: block;
+        }
+
+        .form-success i {
+            margin-right: 8px;
+        }
+
         footer {
             text-align: center;
             padding: 2.5rem 0;
@@ -442,7 +517,7 @@
             .projects-grid { gap: 1.2rem; }
             .modal-body { padding: 1.5rem; }
             .modal-img { max-height: 45vh; }
-            .contact-grid { padding: 1.5rem; }
+            .contact-grid { padding: 1.5rem; flex-direction: column; }
         }
     </style>
 </head>
@@ -513,6 +588,24 @@
                     <div class="contact-detail"><i class="fab fa-telegram"></i> <span class="copyable" data-copy="@anna_smirnova_dev">@anna_smirnova_dev</span></div>
                     <div class="contact-detail"><i class="fas fa-phone"></i> <span class="copyable" data-copy="+7 999 123-45-67">+7 999 123-45-67</span></div>
                     <p style="margin-top: 20px; font-size: 0.85rem;"><i class="fas fa-mouse-pointer"></i> Нажмите на любой контакт, чтобы скопировать</p>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm" action="https://formspree.io/f/xgobbzpl" method="POST">
+                        <label for="user_name">Ваше имя <span class="required-star">*</span></label>
+                        <input type="text" id="user_name" name="name" placeholder="Как к вам обращаться?" required>
+
+                        <label for="user_email">Email или Telegram <span class="required-star">*</span></label>
+                        <input type="text" id="user_email" name="email" placeholder="example@mail.ru или @telegram" required>
+
+                        <label for="user_message">Опишите идею или задачу</label>
+                        <textarea id="user_message" name="message" rows="3" placeholder="Например: нужен лендинг для фермерского магазина с корзиной..."></textarea>
+
+                        <button type="submit">Отправить заявку</button>
+                        
+                        <div id="formSuccess" class="form-success">
+                            <i class="fas fa-check-circle"></i> Спасибо! Ваше сообщение отправлено. Я свяжусь с вами в ближайшее время.
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -649,40 +742,23 @@
         document.body.style.overflow = 'auto';
     }
 
-    // ===== ВЫРАВНИВАНИЕ ВЫСОТЫ КАРТОЧЕК (как на paris.borser.site) =====
+    // ===== ВЫРАВНИВАНИЕ ВЫСОТЫ КАРТОЧЕК =====
     function equalizeCardHeights() {
         const cards = document.querySelectorAll('.project-card');
         if (cards.length === 0) return;
-        
-        // Сбрасываем высоту, чтобы получить естественные размеры
         cards.forEach(card => card.style.height = 'auto');
-        
         let maxHeight = 0;
         cards.forEach(card => {
             const h = card.offsetHeight;
             if (h > maxHeight) maxHeight = h;
         });
-        
-        // Применяем максимальную высоту ко всем карточкам
         cards.forEach(card => {
             card.style.height = maxHeight + 'px';
         });
     }
 
-    // Запускаем после загрузки страницы и при изменении размера окна
-    window.addEventListener('load', function() {
-        renderProjects();
-        equalizeCardHeights();
-    });
-
-    // Пересчитываем при изменении размера окна (с задержкой, чтобы не тормозить)
-    let resizeTimer;
-    window.addEventListener('resize', function() {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(equalizeCardHeights, 300);
-    });
-
-    document.addEventListener('DOMContentLoaded', () => {
+    // ===== ОБРАБОТКА ФОРМЫ =====
+    document.addEventListener('DOMContentLoaded', function() {
         // Плавная прокрутка
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -716,6 +792,53 @@
                 document.body.appendChild(tooltip);
                 setTimeout(() => tooltip.remove(), 1200);
             });
+        });
+
+        // Отправка формы через fetch
+        const form = document.getElementById('contactForm');
+        const successDiv = document.getElementById('formSuccess');
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    message: formData.get('message') || ''
+                };
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    if (response.ok) {
+                        successDiv.classList.add('show');
+                        form.reset();
+                        setTimeout(() => {
+                            successDiv.classList.remove('show');
+                        }, 10000);
+                    } else {
+                        alert('Что-то пошло не так. Пожалуйста, попробуйте ещё раз.');
+                    }
+                } catch (error) {
+                    alert('Ошибка соединения. Проверьте интернет и попробуйте снова.');
+                }
+            });
+        }
+
+        // Рендерим проекты и выравниваем карточки
+        renderProjects();
+        equalizeCardHeights();
+
+        // Пересчёт высоты при изменении окна
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(equalizeCardHeights, 300);
         });
     });
 </script>
