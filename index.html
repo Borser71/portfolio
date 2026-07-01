@@ -17,7 +17,6 @@
             background: #fefefe;
             color: #1a1a2e;
             line-height: 1.5;
-            /* плавная прокрутка через CSS (работает в современных браузерах) */
             scroll-behavior: smooth;
         }
 
@@ -153,12 +152,15 @@
             margin-bottom: 3rem;
         }
 
+        /* ===== СЕТКА КАРТОЧЕК ===== */
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
+            align-items: stretch;
         }
 
+        /* ===== КАРТОЧКА ===== */
         .project-card {
             background: white;
             border-radius: 1.5rem;
@@ -167,6 +169,7 @@
             transition: all 0.25s ease;
             display: flex;
             flex-direction: column;
+            /* высоту будем задавать через JS, поэтому убираем height: 100% */
         }
 
         .project-card:hover {
@@ -174,41 +177,19 @@
             box-shadow: 0 20px 30px -12px rgba(0,0,0,0.15);
         }
 
-        .project-img-wrapper {
-            position: relative;
+        .project-card .project-img {
             width: 100%;
             height: 220px;
-            overflow: hidden;
+            object-fit: cover; /* меняем на cover, чтобы картинки заполняли блок без пустот */
             background: #e2e8f0;
-        }
-
-        .project-img-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            filter: blur(12px) brightness(0.7);
-            transform: scale(1.1);
-            z-index: 1;
-        }
-
-        .project-img {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            z-index: 2;
             display: block;
         }
 
         .project-info {
             padding: 1.5rem;
-            flex: 1;
             display: flex;
             flex-direction: column;
+            flex: 1;
         }
 
         .project-info h3 {
@@ -232,11 +213,16 @@
             font-weight: 500;
         }
 
+        .project-info p {
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+
         .project-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            margin-top: 1rem;
+            margin-top: auto;
             color: #2563eb;
             font-weight: 600;
             text-decoration: none;
@@ -245,12 +231,14 @@
             border: none;
             font-size: 0.95rem;
             align-self: flex-start;
+            padding: 4px 0;
         }
 
         .project-link:hover {
             gap: 12px;
         }
 
+        /* ===== МОДАЛЬНОЕ ОКНО ===== */
         .modal {
             display: none;
             position: fixed;
@@ -348,6 +336,7 @@
             margin: 1rem 0;
         }
 
+        /* ===== ОБО МНЕ ===== */
         .about-flex {
             display: flex;
             gap: 3rem;
@@ -377,6 +366,7 @@
             font-size: 0.9rem;
         }
 
+        /* ===== КОНТАКТЫ ===== */
         .contact-grid {
             display: flex;
             flex-direction: column;
@@ -446,6 +436,7 @@
             color: #5b6e8c;
         }
 
+        /* ===== АДАПТАЦИЯ ===== */
         @media (max-width: 760px) {
             .hero h1 { font-size: 2rem; }
             .projects-grid { gap: 1.2rem; }
@@ -623,10 +614,7 @@
         if (!grid) return;
         grid.innerHTML = projectsData.map(project => `
             <div class="project-card">
-                <div class="project-img-wrapper">
-                    <div class="project-img-bg" style="background-image: url('${project.img}');"></div>
-                    <img class="project-img" src="${project.img}" alt="${project.title}" onerror="this.src='https://placehold.co/600x400?text=Фото+проекта'">
-                </div>
+                <img class="project-img" src="${project.img}" alt="${project.title}" onerror="this.src='https://placehold.co/600x400?text=Фото+проекта'">
                 <div class="project-info">
                     <h3>${project.title}</h3>
                     <div class="project-tags">${project.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}</div>
@@ -661,17 +649,48 @@
         document.body.style.overflow = 'auto';
     }
 
-    // ---- ПЛАВНАЯ ПРОКРУТКА (работает 100%) ----
+    // ===== ВЫРАВНИВАНИЕ ВЫСОТЫ КАРТОЧЕК (как на paris.borser.site) =====
+    function equalizeCardHeights() {
+        const cards = document.querySelectorAll('.project-card');
+        if (cards.length === 0) return;
+        
+        // Сбрасываем высоту, чтобы получить естественные размеры
+        cards.forEach(card => card.style.height = 'auto');
+        
+        let maxHeight = 0;
+        cards.forEach(card => {
+            const h = card.offsetHeight;
+            if (h > maxHeight) maxHeight = h;
+        });
+        
+        // Применяем максимальную высоту ко всем карточкам
+        cards.forEach(card => {
+            card.style.height = maxHeight + 'px';
+        });
+    }
+
+    // Запускаем после загрузки страницы и при изменении размера окна
+    window.addEventListener('load', function() {
+        renderProjects();
+        equalizeCardHeights();
+    });
+
+    // Пересчитываем при изменении размера окна (с задержкой, чтобы не тормозить)
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(equalizeCardHeights, 300);
+    });
+
     document.addEventListener('DOMContentLoaded', () => {
-        // Все ссылки, начинающиеся с #
+        // Плавная прокрутка
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 const targetId = this.getAttribute('href');
                 if (targetId === "#" || targetId === "") return;
-                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
-                    e.preventDefault(); // отменяем стандартное поведение
+                    e.preventDefault();
                     targetElement.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
@@ -680,7 +699,7 @@
             });
         });
 
-        // Остальной код (модалки, копирование)
+        // Модалки и копирование
         const modal = document.getElementById('projectModal');
         modal.querySelector('.modal-close').addEventListener('click', closeModal);
         modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
@@ -698,8 +717,6 @@
                 setTimeout(() => tooltip.remove(), 1200);
             });
         });
-
-        renderProjects();
     });
 </script>
 </body>
